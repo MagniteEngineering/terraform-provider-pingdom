@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/russellcardullo/go-pingdom/pingdom"
+	"github.com/MagniteEngineering/go-pingdom/pingdom"
 )
 
 func resourcePingdomCheck() *schema.Resource {
@@ -41,6 +41,12 @@ func resourcePingdomCheck() *schema.Resource {
 			},
 
 			"paused": {
+				Type:     schema.TypeBool,
+				Optional: true,
+				ForceNew: false,
+			},
+
+			"ipv6": {
 				Type:     schema.TypeBool,
 				Optional: true,
 				ForceNew: false,
@@ -210,6 +216,7 @@ type commonCheckParams struct {
 	ProbeFilters             string
 	StringToSend             string
 	StringToExpect           string
+	IPv6                     bool
 }
 
 func sortString(input string, seperator string) string {
@@ -231,6 +238,10 @@ func checkForResource(d *schema.ResourceData) (pingdom.Check, error) {
 
 	if v, ok := d.GetOk("paused"); ok {
 		checkParams.Paused = v.(bool)
+	}
+
+	if v, ok := d.GetOk("ipv6"); ok {
+		checkParams.IPv6 = v.(bool)
 	}
 
 	if v, ok := d.GetOk("resolution"); ok {
@@ -361,6 +372,7 @@ func checkForResource(d *schema.ResourceData) (pingdom.Check, error) {
 			ProbeFilters:             checkParams.ProbeFilters,
 			UserIds:                  checkParams.UserIds,
 			TeamIds:                  checkParams.TeamIds,
+			IPv6:                  	  checkParams.IPv6,
 		}, nil
 	case "ping":
 		return &pingdom.PingCheck{
@@ -572,6 +584,9 @@ func resourcePingdomCheckRead(d *schema.ResourceData, meta interface{}) error {
 			}
 		}
 		if err := d.Set("requestheaders", ck.Type.HTTP.RequestHeaders); err != nil {
+			return err
+		}
+		if err := d.Set("ipv6", ck.Type.HTTP.IPv6); err != nil {
 			return err
 		}
 	} else if ck.Type.TCP != nil {
