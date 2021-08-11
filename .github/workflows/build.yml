@@ -1,0 +1,9 @@
+name: build
+on: workflow_dispatch
+jobs:
+  build-terraform-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup go
+        uses: actions/setup-go@v1
