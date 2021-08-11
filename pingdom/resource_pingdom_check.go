@@ -586,9 +586,6 @@ func resourcePingdomCheckRead(d *schema.ResourceData, meta interface{}) error {
 		if err := d.Set("requestheaders", ck.Type.HTTP.RequestHeaders); err != nil {
 			return err
 		}
-		if err := d.Set("ipv6", ck.Type.HTTP.IPv6); err != nil {
-			return err
-		}
 	} else if ck.Type.TCP != nil {
 		if err := d.Set("type", "tcp"); err != nil {
 			return err
