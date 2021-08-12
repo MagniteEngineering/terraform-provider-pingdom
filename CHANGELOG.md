@@ -1,5 +1,13 @@
 ## Unreleased
 
+## 1.1.4 (August 12, 2021)
+
+NEW FEATURES:
+  * Add support for managing IPv6 checks.
+
+BUG FIXES:
+  * Fixes issue (#88)
+
 ## 1.1.3 (October 20, 2020)
 
 BREAKING CHANGES:
@@ -11,7 +19,7 @@ NEW FEATURES:
   * Add support for the v3.1 Pingdom API (#77)
 
 IMPROVEMENTS:
-  
+
   * Documentation improvements (#73, #76)
   * Add GitHub actions workflows for linting and testing (#75)
 
